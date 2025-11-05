@@ -2,14 +2,14 @@
 name: apify-integration-agent
 description: "Apify integration assistant agent easily integrates Apify into your existing Github repository for web scraping, automation and real-time web access."
 mcp-servers:
-  octopus:
+  apify:
     type: 'local'
     command: 'npx'
     args:
     - '-y'
     - '@apify/actors-mcp-server'
     env:
-      APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
+      APIFY_TOKEN: COPILOT_MCP_APIFY_TOKEN
     tools:
     - 'fetch-actor-details'
     - 'search-actors'
