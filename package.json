@@ -1,0 +1,22 @@
+{
+  "name": "instagram-cli",
+  "version": "1.0.0",
+  "description": "CLI tool to fetch and display Instagram profile details and latest post",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node index.js"
+  },
+  "keywords": [
+    "instagram",
+    "cli",
+    "profile",
+    "posts"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "readline-sync": "^1.4.10"
+  }
+}
