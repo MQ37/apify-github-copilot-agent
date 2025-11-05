@@ -1,18 +1,32 @@
 # Instagram CLI Tool
 
-A simple Node.js CLI application that fetches and displays Instagram profile details and latest post information.
+A simple Node.js CLI application that fetches and displays Instagram profile details and latest post information using the Apify Instagram scraper.
 
 ## Features
 
 - Interactive CLI prompts user for Instagram profile handle
-- Displays profile information (followers, following, bio, etc.)
-- Shows latest post details (likes, comments, caption, etc.)
+- Uses Apify's Instagram scraper Actor to fetch real data
+- Shows latest post details (likes, comments, caption, timestamp, post URL, etc.)
 - Clean and formatted output with emoji indicators
 
 ## Installation
 
 ```bash
 npm install
+```
+
+## Setup
+
+1. Create a `.env` file in the project root:
+```bash
+cp .env.example .env
+```
+
+2. Get your Apify API token from: https://console.apify.com/account#/integrations
+
+3. Add your token to the `.env` file:
+```
+APIFY_TOKEN=your_apify_token_here
 ```
 
 ## Usage
@@ -29,30 +43,34 @@ or
 npm run dev
 ```
 
-The application will prompt you to enter an Instagram profile handle (without the @ symbol).
+The application will prompt you to enter an Instagram profile handle (without the @ symbol). For example, try `therock` to see The Rock's latest post.
 
 ## Project Structure
 
-- `index.js` - Main CLI application
+- `index.js` - Main CLI application with Apify integration
 - `package.json` - Project configuration and dependencies
 - `.gitignore` - Git ignore rules
+- `.env.example` - Example environment variables file
+- `.env` - Your actual environment variables (not committed)
 
-## Development
+## How It Works
 
-### TODO Items
+The application uses the Apify Instagram scraper Actor (`apify/instagram-scraper`) to fetch Instagram data. The scraper:
 
-The following features are marked as TODO and will be implemented by the agent:
-
-1. **Fetch Instagram Profile Data** - Implement `fetchInstagramProfile()` function
-   - Retrieve profile information like followers, following, bio, post count
-   - Validate profile exists
-
-2. **Fetch Latest Post** - Implement `fetchLatestPost()` function
-   - Retrieve the latest post from the profile
-   - Extract post details: caption, likes, comments, timestamp
+1. Takes an Instagram profile URL
+2. Scrapes the latest post from that profile
+3. Returns structured data including:
+   - Caption
+   - Post type (Photo, Video, Sidecar)
+   - Likes count
+   - Comments count
+   - Post URL
+   - Timestamp
 
 ## Dependencies
 
+- `apify-client` - Official Apify API client for running Actors
+- `dotenv` - Environment variable management
 - `readline-sync` - For synchronous command line input
 
 ## License

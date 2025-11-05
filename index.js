@@ -31,8 +31,6 @@ async function main() {
   console.log(`\n📥 Fetching latest post for @${handle}...\n`);
 
   try {
-    // TODO: Fetch latest post data
-    // This part will be filled in by the agent
     const latestPost = await fetchLatestPost(handle);
 
     // Display results
