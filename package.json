@@ -1,0 +1,20 @@
+{
+  "name": "apify-github-copilot-agent",
+  "version": "1.0.0",
+  "description": "Apify Github copilot agent integrates Apify's web scraping and automation capabilities easily into your existing projects.",
+  "main": "index.js",
+  "scripts": {
+    "fetch-schema": "node fetchActorInfo.js",
+    "fetch-schema:api": "node fetchInputSchema.js",
+    "fetch-schema:playwright": "node fetchInputSchemaPlaywright.js",
+    "install-browsers": "npx playwright install chromium",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apify-client": "^2.19.0",
+    "playwright": "^1.56.1"
+  }
+}
