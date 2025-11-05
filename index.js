@@ -105,8 +105,8 @@ function displayLatestPost(latestPost) {
   console.log('📸 LATEST POST\n');
   console.log(`Caption: ${latestPost.caption}`);
   console.log(`Type: ${latestPost.type}`);
-  console.log(`Likes: ${latestPost.likes.toLocaleString()}`);
-  console.log(`Comments: ${latestPost.comments.toLocaleString()}`);
+  console.log(`Likes: ${typeof latestPost.likes === 'number' ? latestPost.likes.toLocaleString() : latestPost.likes}`);
+  console.log(`Comments: ${typeof latestPost.comments === 'number' ? latestPost.comments.toLocaleString() : latestPost.comments}`);
   console.log(`Timestamp: ${latestPost.timestamp}`);
   console.log(`Post URL: ${latestPost.postUrl}`);
   console.log('\n' + '='.repeat(40) + '\n');
