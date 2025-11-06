@@ -17,6 +17,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "apify-client": "^2.19.0",
+    "dotenv": "^17.2.3",
     "yargs": "^18.0.0"
   }
 }
