@@ -81,6 +81,12 @@ async function fetchLatestPost(handle) {
 
   // Return the first (latest) post
   const post = items[0];
+  
+  // Check if the post has valid data
+  if (!post.id || post.type === 'N/A') {
+    throw new Error(`Profile @${handle} might not exist or has no public posts.`);
+  }
+  
   return {
     caption: post.caption || 'N/A',
     likes: post.likesCount !== undefined ? post.likesCount.toLocaleString() : 'N/A',
