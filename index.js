@@ -1,5 +1,10 @@
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
+import { ApifyClient } from 'apify-client';
+import dotenv from 'dotenv';
+
+// Load environment variables
+dotenv.config();
 
 /**
  * Instagram CLI Tool
@@ -41,16 +46,54 @@ async function main() {
  * Fetch latest post from Instagram profile
  * @param {string} handle - Instagram profile handle
  * @returns {Promise<Object>} Latest post data
- * 
- * TODO: Implement this function to fetch the latest post details
  */
 async function fetchLatestPost(handle) {
-  // Placeholder implementation
+  // Check for API token
+  if (!process.env.APIFY_TOKEN) {
+    throw new Error('APIFY_TOKEN environment variable is required. Please set it in a .env file.');
+  }
+
+  // Initialize Apify client
+  const client = new ApifyClient({
+    token: process.env.APIFY_TOKEN,
+  });
+
+  console.log('🚀 Running Instagram Post Scraper...\n');
+
+  // Run the Instagram Post Scraper Actor
+  const run = await client.actor('apify/instagram-post-scraper').call({
+    username: [handle],
+    resultsLimit: 1, // Get only the latest post
+  });
+
+  console.log('⏳ Waiting for scraper to finish...\n');
+
+  // Wait for the Actor to complete
+  await client.run(run.id).waitForFinish();
+
+  // Get the dataset with results
+  const dataset = client.dataset(run.defaultDatasetId);
+  const { items } = await dataset.listItems();
+
+  if (!items || items.length === 0) {
+    throw new Error(`No posts found for @${handle}. The profile might be private or doesn't exist.`);
+  }
+
+  // Return the first (latest) post
+  const post = items[0];
+  
+  // Check if the post has valid data
+  if (!post.id || post.type === 'N/A') {
+    throw new Error(`Profile @${handle} might not exist or has no public posts.`);
+  }
+  
   return {
-    caption: 'N/A',
-    likes: 'N/A',
-    comments: 'N/A',
-    postUrl: 'N/A',
+    caption: post.caption || 'N/A',
+    likes: post.likesCount !== undefined ? post.likesCount.toLocaleString() : 'N/A',
+    comments: post.commentsCount !== undefined ? post.commentsCount.toLocaleString() : 'N/A',
+    postUrl: post.url || 'N/A',
+    timestamp: post.timestamp || 'N/A',
+    type: post.type || 'N/A',
   };
 }
 
@@ -59,13 +102,15 @@ async function fetchLatestPost(handle) {
  * @param {Object} latestPost - Latest post information
  */
 function displayLatestPost(latestPost) {
-  console.log('='.repeat(40));
+  console.log('='.repeat(50));
   console.log('📸 LATEST POST\n');
-  console.log(`Caption: ${latestPost.caption}`);
-  console.log(`Likes: ${latestPost.likes}`);
-  console.log(`Comments: ${latestPost.comments}`);
-  console.log(`Post URL: ${latestPost.postUrl}`);
-  console.log('\n' + '='.repeat(40) + '\n');
+  console.log(`Type: ${latestPost.type}`);
+  console.log(`Posted: ${latestPost.timestamp}`);
+  console.log(`\nCaption: ${latestPost.caption}`);
+  console.log(`\n❤️  Likes: ${latestPost.likes}`);
+  console.log(`💬 Comments: ${latestPost.comments}`);
+  console.log(`\n🔗 Post URL: ${latestPost.postUrl}`);
+  console.log('\n' + '='.repeat(50) + '\n');
 }
 
 // Run the CLI
