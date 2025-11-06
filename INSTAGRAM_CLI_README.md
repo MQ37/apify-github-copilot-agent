@@ -1,59 +1,119 @@
 # Instagram CLI Tool
 
-A simple Node.js CLI application that fetches and displays Instagram profile details and latest post information.
+A simple Node.js CLI application that fetches and displays the latest post information from Instagram profiles using the Apify platform.
 
 ## Features
 
-- Interactive CLI prompts user for Instagram profile handle
-- Displays profile information (followers, following, bio, etc.)
-- Shows latest post details (likes, comments, caption, etc.)
+- Fetch latest post from any public Instagram profile
+- Displays comprehensive post details:
+  - Post type (Image, Video, Carousel)
+  - Caption
+  - Like count
+  - Comment count
+  - Video view count (for videos)
+  - Post timestamp
+  - Direct link to the post
 - Clean and formatted output with emoji indicators
+- Powered by Apify's Instagram Scraper
+
+## Prerequisites
+
+1. **Node.js** (v14 or higher)
+2. **Apify Account** - Sign up at [apify.com](https://apify.com)
+3. **Apify API Token** - Get your token from [console.apify.com/account#/integrations](https://console.apify.com/account#/integrations)
 
 ## Installation
+
+1. Clone the repository and install dependencies:
 
 ```bash
 npm install
 ```
 
-## Usage
-
-Run the CLI with:
+2. Create a `.env` file in the project root with your Apify token:
 
 ```bash
-npm start
+cp .env.example .env
+```
+
+3. Edit `.env` and add your Apify API token:
+
+```
+APIFY_TOKEN=your_apify_token_here
+```
+
+## Usage
+
+Run the CLI with the `-p` or `--profile` flag followed by an Instagram handle (without the @ symbol):
+
+```bash
+npm start -- -p therock
 ```
 
 or
 
 ```bash
-npm run dev
+npm start -- --profile natgeo
 ```
 
-The application will prompt you to enter an Instagram profile handle (without the @ symbol).
+### Example Output
+
+```
+📥 Fetching latest post for @therock...
+
+========================================
+📸 LATEST POST
+
+Type: Video
+Posted: 9/13/2025, 6:53:03 PM
+
+Caption: Here's our newest trailer for THE SMASHING MACHINE...
+
+❤️  Likes: 135,716
+💬 Comments: 3,534
+👁️  Video Views: 1,180,666
+
+🔗 Post URL: https://www.instagram.com/p/DOjZnkGkbi5/
+
+========================================
+```
 
 ## Project Structure
 
-- `index.js` - Main CLI application
+- `index.js` - Main CLI application with Apify integration
 - `package.json` - Project configuration and dependencies
+- `.env` - Environment variables (API token)
+- `.env.example` - Example environment configuration
 - `.gitignore` - Git ignore rules
 
-## Development
+## How It Works
 
-### TODO Items
+The CLI uses the [Apify Instagram Scraper](https://apify.com/apify/instagram-scraper) actor to fetch data from Instagram profiles. The scraper:
 
-The following features are marked as TODO and will be implemented by the agent:
-
-1. **Fetch Instagram Profile Data** - Implement `fetchInstagramProfile()` function
-   - Retrieve profile information like followers, following, bio, post count
-   - Validate profile exists
-
-2. **Fetch Latest Post** - Implement `fetchLatestPost()` function
-   - Retrieve the latest post from the profile
-   - Extract post details: caption, likes, comments, timestamp
+1. Takes an Instagram profile URL
+2. Retrieves the latest post from that profile
+3. Returns detailed post information including caption, likes, comments, and more
+4. Handles both image and video posts
 
 ## Dependencies
 
-- `readline-sync` - For synchronous command line input
+- `yargs` - Command-line argument parsing
+- `apify-client` - Official Apify SDK for Node.js
+- `dotenv` - Environment variable management
+
+## Troubleshooting
+
+### Error: APIFY_TOKEN environment variable is not set
+
+Make sure you've created a `.env` file with your Apify token. See the Installation section above.
+
+### Error: No posts found
+
+This can happen if:
+- The profile doesn't exist
+- The profile is private
+- The profile has no posts
+- The handle was misspelled
 
 ## License
 
