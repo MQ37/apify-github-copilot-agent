@@ -1,59 +1,87 @@
 # Instagram CLI Tool
 
-A simple Node.js CLI application that fetches and displays Instagram profile details and latest post information.
+A simple Node.js CLI application that fetches and displays Instagram profile details and latest post information using the Apify Instagram Profile Scraper.
 
 ## Features
 
-- Interactive CLI prompts user for Instagram profile handle
-- Displays profile information (followers, following, bio, etc.)
-- Shows latest post details (likes, comments, caption, etc.)
+- Fetches latest post from any public Instagram profile
+- Displays post details (likes, comments, caption, URL)
 - Clean and formatted output with emoji indicators
+- Powered by Apify's Instagram Profile Scraper
+
+## Prerequisites
+
+- Node.js (v14 or higher)
+- An Apify account and API token
 
 ## Installation
+
+1. Clone the repository and navigate to the project directory
+
+2. Install dependencies:
 
 ```bash
 npm install
 ```
 
+3. Set up your Apify API token:
+   - Create a free account at [Apify](https://console.apify.com/sign-up)
+   - Get your API token from [Apify Integrations](https://console.apify.com/account/integrations)
+   - Copy `.env.example` to `.env`:
+     ```bash
+     cp .env.example .env
+     ```
+   - Add your Apify token to `.env`:
+     ```
+     APIFY_TOKEN=your_actual_apify_token_here
+     ```
+
 ## Usage
 
-Run the CLI with:
+Run the CLI with an Instagram profile handle:
 
 ```bash
-npm start
+npm start -- -p <profile_handle>
 ```
 
 or
 
 ```bash
-npm run dev
+npm start -- --profile <profile_handle>
 ```
 
-The application will prompt you to enter an Instagram profile handle (without the @ symbol).
+### Examples
+
+```bash
+# Get latest post for @kapakoulak
+npm start -- -p kapakoulak
+
+# Get latest post for @natgeo
+npm start -- --profile natgeo
+```
+
+The application will fetch and display the latest post information including:
+- Caption
+- Number of likes
+- Number of comments
+- Post URL
 
 ## Project Structure
 
-- `index.js` - Main CLI application
+- `index.js` - Main CLI application with Apify integration
 - `package.json` - Project configuration and dependencies
+- `.env.example` - Example environment variables file
 - `.gitignore` - Git ignore rules
-
-## Development
-
-### TODO Items
-
-The following features are marked as TODO and will be implemented by the agent:
-
-1. **Fetch Instagram Profile Data** - Implement `fetchInstagramProfile()` function
-   - Retrieve profile information like followers, following, bio, post count
-   - Validate profile exists
-
-2. **Fetch Latest Post** - Implement `fetchLatestPost()` function
-   - Retrieve the latest post from the profile
-   - Extract post details: caption, likes, comments, timestamp
 
 ## Dependencies
 
-- `readline-sync` - For synchronous command line input
+- `yargs` - Command-line argument parsing
+- `apify-client` - Apify API client for Instagram scraping
+- `dotenv` - Environment variable management
+
+## How It Works
+
+This tool uses the [Apify Instagram Profile Scraper](https://apify.com/apify/instagram-profile-scraper) to fetch public Instagram profile data. The scraper retrieves the latest posts from the profile, and the CLI displays the most recent one.
 
 ## License
 
