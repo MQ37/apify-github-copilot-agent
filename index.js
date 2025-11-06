@@ -106,7 +106,7 @@ function displayLatestPost(latestPost) {
   console.log(`🕐 Posted: ${latestPost.timestamp}`);
   console.log(`📝 Type: ${latestPost.type}`);
   console.log(`\n💬 Caption:\n${latestPost.caption}\n`);
-  console.log(`❤️  Likes: ${latestPost.likes}`);
+  console.log(`❤️ Likes: ${latestPost.likes}`);
   console.log(`💭 Comments: ${latestPost.comments}`);
   
   if (latestPost.videoViews) {
