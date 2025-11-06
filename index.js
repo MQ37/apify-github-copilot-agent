@@ -1,4 +1,5 @@
-import readlineSync from 'readline-sync';
+import yargs from 'yargs';
+import { hideBin } from 'yargs/helpers';
 
 /**
  * Instagram CLI Tool
@@ -6,22 +7,20 @@ import readlineSync from 'readline-sync';
  */
 
 async function main() {
-  console.log('\n🎯 Instagram Latest Post CLI\n');
-  console.log('='.repeat(40));
+  const argv = yargs(hideBin(process.argv))
+    .option('profile', {
+      alias: 'p',
+      describe: 'Instagram profile handle (without @)',
+      type: 'string',
+      demandOption: true,
+    })
+    .help()
+    .alias('help', 'h')
+    .example('$0 -p kapakoulak', 'Get latest post for @kapakoulak')
+    .example('$0 --profile kapakoulak', 'Get latest post for @kapakoulak')
+    .parseSync();
 
-  // Get Instagram profile handle from user
-  const handle = readlineSync.question(
-    'Enter Instagram profile handle (without @): ',
-    {
-      trim: true,
-      defaultValue: '',
-    }
-  );
-
-  if (!handle) {
-    console.log('❌ Profile handle cannot be empty');
-    process.exit(1);
-  }
+  const handle = argv.profile;
 
   console.log(`\n📥 Fetching latest post for @${handle}...\n`);
 
